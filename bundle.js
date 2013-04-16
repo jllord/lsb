@@ -587,14 +587,14 @@ var input = document.getElementById('input').getContext('2d')
   c.canvas.height = 256
 })
 
-var lenna = new Image
-lenna.onload = function() {
+var nyan = new Image
+nyan.onload = function() {
   ;[input, output].forEach(function(c) {
-    c.drawImage(lenna, 0, 0, c.canvas.width, c.canvas.height)
+    c.drawImage(nyan, 0, 0, c.canvas.width, c.canvas.height)
   })
   updateText()
 }
-lenna.src = 'img/lenna.png'
+nyan.src = 'img/nyan.png'
 
 textarea.onkeyup =
 textarea.onchange = updateText
