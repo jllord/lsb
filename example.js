@@ -69,6 +69,7 @@ $(document).on('click', '#file-export', exportImage)
 
 function exportImage(){
   var image = new Image
+  var canvas = $('#output')[0]
   image.src = canvas.toDataURL()
   window.open(image.src, 'export-window')
 }
