@@ -331,47 +331,6 @@ exports.extname = function(path) {
   return splitPathRe.exec(path)[3] || '';
 };
 
-exports.relative = function(from, to) {
-  from = exports.resolve(from).substr(1);
-  to = exports.resolve(to).substr(1);
-
-  function trim(arr) {
-    var start = 0;
-    for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
-    }
-
-    var end = arr.length - 1;
-    for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
-    }
-
-    if (start > end) return [];
-    return arr.slice(start, end - start + 1);
-  }
-
-  var fromParts = trim(from.split('/'));
-  var toParts = trim(to.split('/'));
-
-  var length = Math.min(fromParts.length, toParts.length);
-  var samePartsLength = length;
-  for (var i = 0; i < length; i++) {
-    if (fromParts[i] !== toParts[i]) {
-      samePartsLength = i;
-      break;
-    }
-  }
-
-  var outputParts = [];
-  for (var i = samePartsLength; i < fromParts.length; i++) {
-    outputParts.push('..');
-  }
-
-  outputParts = outputParts.concat(toParts.slice(samePartsLength));
-
-  return outputParts.join('/');
-};
-
 });
 
 require.define("__browserify_process",function(require,module,exports,__dirname,__filename,process,global){var process = module.exports = {};
@@ -442,12 +401,13 @@ require.define("/node_modules/debounce/debounce.js",function(require,module,expo
  * @see http://unscriptable.com/2009/03/20/debouncing-javascript-methods/
  * @param {Function} function to wrap
  * @param {Number} timeout in ms (`100`)
- * @param {Boolean} whether to execute at the beginning (`false`)
+ * @param {Boolean} whether to execute at the beginning (`true`)
  * @api public
  */
 
 module.exports = function debounce(func, threshold, execAsap){
   var timeout;
+  if (false !== execAsap) execAsap = true;
 
   return function debounced(){
     var obj = this, args = arguments;
@@ -632,6 +592,45 @@ function updateText() {
       enlarged.fillRect(x * 8, y * 8, 8, 8)
     }
   }
+}
+
+updateText = debounce(updateText, 50, true)
+
+// save png:
+
+$(document).on('click', '#file-export', exportImage)
+
+function exportImage(){
+  var image = new Image
+  image.src = canvas.toDataURL()
+  window.open(image.src, 'export-window')
+}
+ 
+// decode:
+ 
+$(document).on('change', '#file-uploader-input', handleFileSelect)
+ 
+function handleFileSelect(evt) {
+  var files = evt.target.files
+  var file = files[0]
+  var parts = file.name.split('.')
+  if (parts[parts.length - 1] !== 'png') return
+  var reader = new FileReader()
+  reader.onloadend = function() {
+    var canvas = document.createElement('canvas')
+    var ctx = canvas.getContext('2d')
+    var width = canvas.width = image.width
+    var height = canvas.height = image.height
+    var image = new Image
+    img.src = reader.result
+    ctx.fillStyle = 'rgb(255,255,255)'
+    ctx.fillRect(0, 0, width, height)
+    ctx.drawImage(image, 0, 0)
+    var imageData = ctx.getImageData(0, 0, width, height)
+    var text = lsb.decode(imageData.data, pickRGB)
+    console.log(text)
+  }
+  reader.readAsDataURL(file)
 }
 
 });

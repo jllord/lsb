@@ -62,3 +62,40 @@ function updateText() {
 }
 
 updateText = debounce(updateText, 50, true)
+
+// save png:
+
+$(document).on('click', '#file-export', exportImage)
+
+function exportImage(){
+  var image = new Image
+  image.src = canvas.toDataURL()
+  window.open(image.src, 'export-window')
+}
+ 
+// decode:
+ 
+$(document).on('change', '#file-uploader-input', handleFileSelect)
+ 
+function handleFileSelect(evt) {
+  var files = evt.target.files
+  var file = files[0]
+  var parts = file.name.split('.')
+  if (parts[parts.length - 1] !== 'png') return
+  var reader = new FileReader()
+  reader.onloadend = function() {
+    var canvas = document.createElement('canvas')
+    var ctx = canvas.getContext('2d')
+    var width = canvas.width = image.width
+    var height = canvas.height = image.height
+    var image = new Image
+    img.src = reader.result
+    ctx.fillStyle = 'rgb(255,255,255)'
+    ctx.fillRect(0, 0, width, height)
+    ctx.drawImage(image, 0, 0)
+    var imageData = ctx.getImageData(0, 0, width, height)
+    var text = lsb.decode(imageData.data, pickRGB)
+    console.log(text)
+  }
+  reader.readAsDataURL(file)
+}
