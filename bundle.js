@@ -13,7 +13,7 @@ require.paths = [];
 require.modules = {};
 require.cache = {};
 require.extensions = [".js",".coffee",".json"];
-
+  
 require._core = {
     'assert': true,
     'events': true,
@@ -602,6 +602,7 @@ $(document).on('click', '#file-export', exportImage)
 
 function exportImage(){
   var image = new Image
+  var canvas = $('#output')[0]
   image.src = canvas.toDataURL()
   window.open(image.src, 'export-window')
 }
