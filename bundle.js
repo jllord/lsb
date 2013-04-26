@@ -13,7 +13,7 @@ require.paths = [];
 require.modules = {};
 require.cache = {};
 require.extensions = [".js",".coffee",".json"];
-  
+
 require._core = {
     'assert': true,
     'events': true,
@@ -617,19 +617,25 @@ function handleFileSelect(evt) {
   var parts = file.name.split('.')
   if (parts[parts.length - 1] !== 'png') return
   var reader = new FileReader()
-  reader.onloadend = function() {
+  reader.onload = function(e) {
+    var image = new Image
+    image.src = event.target.result
+    image.onload = function(){
     var canvas = document.createElement('canvas')
     var ctx = canvas.getContext('2d')
     var width = canvas.width = image.width
     var height = canvas.height = image.height
-    var image = new Image
-    img.src = reader.result
     ctx.fillStyle = 'rgb(255,255,255)'
     ctx.fillRect(0, 0, width, height)
     ctx.drawImage(image, 0, 0)
     var imageData = ctx.getImageData(0, 0, width, height)
-    var text = lsb.decode(imageData.data, pickRGB)
+    var text = lsb.decode(imageData.data, function pickRGB(idx){
+      return idx + (idx/3) | 0
+    })
+    document.getElementById('secretMessage').innerHTML = "The Message is: " + text  
     console.log(text)
+    return text
+    }
   }
   reader.readAsDataURL(file)
 }

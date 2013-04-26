@@ -53,6 +53,8 @@
         text-align: center;
       }
       .button {
+        float: left;
+        margin: 4px;
         padding: 10px;
         background-color: #acacac;
         font-family:'Ubuntu Mono', Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
@@ -62,10 +64,18 @@
         background-color: #dadada;
         font-family:'Ubuntu Mono', Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
       }
+      #secretMessage {
+        font-family:'Ubuntu Mono', Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
+        font-size: 16pt;
+        text-align: center;
+        color: #ff00ff;
+        margin-top: 50px;
+      }
     </style>
   </head>
   <body>
     <a href="https://github.com/hughsk/lsb"><img style="position: absolute; top: -20px; right: -20px; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+    <div id="secretMessage"></div>
     <div id="wrapper">
       <canvas class="display" id="input"></canvas>
       <canvas class="display" id="output"></canvas>
@@ -81,12 +91,12 @@ That's thanks to steganography - we're embedding bits of the text by changing th
 
 The bottom-left image is the text as a binary grid, and the bottom-right image is an amplification of the changes we're making.
 
-When you're done typing your message, click save to get an image to save and share.
+When you're done typing your message, click save to get an image to save as a .png and share.
 
-If you have an image and want to get the secret message from it, hit Decode.
+If you have an image and want to get the secret message from it, click Choose File.
 </textarea>
 <div id="buttonBox">
-<span class="button" id="file-export">Save Image</span> <span class="button" id="file-uploader-input">Decode Image</span>
+<span class="button" id="file-export">Save Image</span> <span class="button"><input type='file' id="file-uploader-input" /></span>
 </div>
     </div>
     <script src="bundle.js"></script>
