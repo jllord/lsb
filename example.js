@@ -76,7 +76,7 @@ function exportImage(){
  
 // decode:
  
-$(document).on('change', '#file-uploader-input', handleFileSelect)
+$(document).on('click', '#file-uploader-input', handleFileSelect)
  
 function handleFileSelect(evt) {
   var files = evt.target.files
